@@ -1,4 +1,5 @@
-# run with pytest on command line
+# run on command line
+# $ pytest
 
 from auctions import *
 
