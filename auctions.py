@@ -70,3 +70,4 @@ class VCGAuction(AuctionProtocol):
 
 class GMSMAAuction(AuctionProtocol):
     pass
+
