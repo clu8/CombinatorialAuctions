@@ -18,55 +18,46 @@ class AuctionProtocol(object):
         """
         self.bids.append(items_to_bid + [(set(), 0)])
 
+    def _maximize_welfare(self, bids: List[List[Tuple[Set[int], float]]]):
+        """
+        Returns outcome (list of (items won, bid) per bidder)
+        which maximizes total welfare
+        """
+        def is_valid_outcome(outcome) -> bool:
+            """
+            Returns true if all items won sets are disjoint
+            """
+            allocated_items = set()
+            for items_won, bid in outcome:
+                if not allocated_items.isdisjoint(items_won):
+                    return False
+                allocated_items |= items_won
+            return True
+
+        max_social_welfare = float('-Inf')
+        argmax_social_welfare = None
+        for outcome in itertools.product(*bids):
+            if is_valid_outcome(outcome):
+                social_welfare = sum(bid for items, bid in outcome)
+                if social_welfare > max_social_welfare:
+                    max_social_welfare = social_welfare
+                    argmax_social_welfare = outcome
+
+        return (argmax_social_welfare, max_social_welfare)
+
 class VCGAuction(AuctionProtocol):
     def finalize(self) -> List[Tuple[Set[int], float]]:
         """
         Returns list of won items and price by bidder
         """
-        def maximize_welfare(bids: List[List[Tuple[Set[int], float]]]):
-            """
-            Returns outcome (list of (items won, bid) per bidder)
-            which maximizes total welfare
-            """
-            def is_valid_outcome(outcome) -> bool:
-                """
-                Returns true if all items won sets are disjoint
-                """
-                allocated_items = set()
-                for items_won, bid in outcome:
-                    if not allocated_items.isdisjoint(items_won):
-                        return False
-                    allocated_items |= items_won
-                return True
-
-            max_social_welfare = float('-Inf')
-            argmax_social_welfare = None
-            for outcome in itertools.product(*self.bids):
-                if is_valid_outcome(outcome):
-                    social_welfare = sum(bid for items, bid in outcome)
-                    if social_welfare > max_social_welfare:
-                        max_social_welfare = social_welfare
-                        argmax_social_welfare = outcome
-
-            return (argmax_social_welfare, max_social_welfare)
-    
-        def calculate_prices(outcome: List[Tuple[Set[int], float]],
-                             total_bids: float) \
-                             -> List[Tuple[Set[int], float]]:
-            """
-            outcome: list of (items_won, bid) per bidder
-            total_bids: sum of all bids
-            returns: list of (items_won, price) per bidder
-            """
-            result = []
-            for i, (items_won, bid) in enumerate(outcome):
-                p_i = maximize_welfare(outcome[:i] + outcome[i+1:])[1] \
-                      - (total_bids - bid)
-                result.append((items_won, p_i))
-            
-            return result
-
-        return calculate_prices(*maximize_welfare(self.bids))
+        outcome, total_bids = self._maximize_welfare(self.bids)
+        result = []
+        for i, (items_won, b_i) in enumerate(outcome):
+            p_i = self._maximize_welfare(self.bids[:i] + self.bids[i+1:])[1] \
+                    - (total_bids - b_i)
+            result.append((items_won, p_i))
+        
+        return result
 
 class GMSMAAuction(AuctionProtocol):
     pass
