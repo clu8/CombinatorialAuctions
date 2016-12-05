@@ -55,14 +55,14 @@ class VCGAuction(AuctionProtocol):
         Returns list of won items and price by bidder
         """
         outcome, total_bids = self._maximize_welfare(self.bids)
-        result = []
-        for i, (items_won, b_i) in enumerate(outcome):
-            # if/else not necessary but improves performance
-            p_i = self._maximize_welfare(self.bids[:i] + self.bids[i+1:])[1] \
+        return [
+            (
+                items_won,
+                # p_i; if/else not necessary but improves performance
+                self._maximize_welfare(self.bids[:i] + self.bids[i+1:])[1] \
                     - (total_bids - b_i) if items_won else 0
-            result.append((items_won, p_i))
-
-        return result
+            ) for i, (items_won, b_i) in enumerate(outcome)
+        ]
 
 class GMSMAAuction(AuctionProtocol):
     pass
