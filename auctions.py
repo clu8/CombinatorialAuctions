@@ -46,6 +46,10 @@ class AuctionProtocol(object):
         return (argmax_social_welfare, max_social_welfare)
 
 class VCGAuction(AuctionProtocol):
+    """
+    Generalized VCG mechanism
+    https://en.wikipedia.org/wiki/Vickrey–Clarke–Groves_auction
+    """
     def finalize(self) -> List[Tuple[Set[int], float]]:
         """
         Returns list of won items and price by bidder
@@ -56,9 +60,8 @@ class VCGAuction(AuctionProtocol):
             p_i = self._maximize_welfare(self.bids[:i] + self.bids[i+1:])[1] \
                     - (total_bids - b_i)
             result.append((items_won, p_i))
-        
+
         return result
 
 class GMSMAAuction(AuctionProtocol):
     pass
-

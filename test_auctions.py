@@ -19,7 +19,6 @@ def test_vcg2():
     a.add_bid([({1, 2}, 5), ({2}, 5)])
     assert a.finalize() == [({1}, 3), (set(), 0), ({2}, 2)]
 
-
 def test_vcg3():
     a = VCGAuction({1, 2})
     a.add_bid([({1}, 4), ({1, 2}, 7), ({2}, 3)])
