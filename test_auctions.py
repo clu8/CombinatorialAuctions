@@ -26,3 +26,15 @@ def test_vcg3():
     a.add_bidder([({1, 2}, 8)])
     assert a.finalize() == [(set(), 0), ({1, 2}, 7)]
 
+def test_gmsma():
+    def sanity_approximation(all_bids):
+        return [[({1}, 4), ({2}, 9), ({1, 2}, 9)],
+                [({1}, 4), ({2}, 4), ({1, 2}, 11)], 
+                [({1}, 10), ({2}, 4), ({1, 2}, 10)]]
+    a = GMSMAAuction()
+    a.add_bidder([({1}, 4), ({2}, 9), ({1, 2}, 9)])
+    a.add_bidder([({1}, 6), ({2}, 5), ({1, 2}, 11)])
+    a.add_bidder([({1}, 10), ({2}, 4), ({1, 2}, 10)])
+    assert a.finalize(sanity_approximation) == [({1}, 4), (set(), 0), ({2}, 4)]
+
+
