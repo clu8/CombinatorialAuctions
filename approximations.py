@@ -1,7 +1,7 @@
 import itertools
 from typing import Set, List, Tuple
 
-def unit_demand_approximation(all_bids: List[List[Tuple[Set[int], float]]]):
+def unit_demand_approximation(all_bids: List[List[Tuple[Set[int], float]]], i):
     """
     Assume that all bids are either unit-demand or single-minded. 
     """

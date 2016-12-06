@@ -7,6 +7,7 @@ class AuctionProtocol(object):
     def __init__(self):
         self.all_bids = []
         self.all_bid_dicts = []
+        self.revenue = 0
 
     def add_bidder(self, bids: List[Tuple[Set[int], float]]):
         """
@@ -91,14 +92,15 @@ class GMSMAAuction(AuctionProtocol):
 
         allocation = self._maximize_welfare(v_prime(self.all_bids, -1))[0]
         argmax_social_welfare, total_bids = self._maximize_welfare(self.all_bids)
-        print(allocation)
+        #print(allocation)
         result = []
         for i, (items, v_prime_i) in enumerate(allocation):
-            u_star = self._maximize_welfare(v_prime(self.all_bids, i))[1]
+            u_star = self._maximize_welfare(v_prime(self.all_bids[:i] + self.all_bids[i+1:], i))[1]
             p_i =  u_star - self._maximize_welfare(remove_bids_with_items(self.all_bids[:i] + self.all_bids[i+1:], items))[1]
-            print('Bidder {}: u* = {}, p_i = {}, b_i = {}'.format(i, u_star, p_i, self.all_bid_dicts[i].get(frozenset(items), 0)))
-            if p_i < self.all_bid_dicts[i].get(frozenset(items), 0):
+            #print('Bidder {}: u* = {}, p_i = {}, b_i = {}'.format(i, u_star, p_i, self.all_bid_dicts[i].get(frozenset(items), 0)))
+            if p_i <= self.all_bid_dicts[i].get(frozenset(items), 0):
                 result.append((items, p_i))
+                self.revenue += p_i
             else:
                 result.append((set(), 0))
         return result
