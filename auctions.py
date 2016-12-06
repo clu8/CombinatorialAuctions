@@ -68,13 +68,13 @@ class GMSMAAuction(AuctionProtocol):
         """
         v: Function v' which is the submodular version of v, which takes all bids
         """
-        outcome, u_star = self._maximize_welfare(v_prime(self.all_bids))
+        outcome, u_star = self._maximize_welfare(v_prime(self.all_bids, -1))
         result = []
         for i, (items, v_prime_i) in enumerate(outcome):
-            p_i = u_star - self._maximize_welfare(self.all_bids[:i] + self.all_bids[i+1:])[1]
-            print(p_i, self.all_bid_dicts[i].get(frozenset(items), 0))
-            if self.all_bid_dicts[i].get(frozenset(items), 0) < p_i:
+            newoutcome, u_star = self._maximize_welfare(v_prime(self.all_bids, i))
+            p_i =  u_star - self._maximize_welfare(self.all_bids[:i] + self.all_bids[i+1:])[1]
+            if self.all_bid_dicts.get(frozenset(items), 0) < p_i:
                 result.append((items, p_i))
             else:
-                result.append((set(), 0))
+                result.append(set(), 0)
         return result
