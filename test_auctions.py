@@ -41,4 +41,19 @@ def test_gmsma():
     a.add_bidder([({1}, 0), ({2}, 5), ({1, 2}, 5)])
     assert a.finalize(sanity_approximation) == [({1}, 4), (set(), 0), ({2}, 4)]
 
+def test_gmsma2():
+    approximated_bids = [[({1}, 4), ({2}, 0), ({1, 2}, 4), (set(), 0)],
+                         [({1}, 4), ({2}, 4), ({1, 2}, 8), (set(), 0)], 
+                         [({1}, 0), ({2}, 3), ({1, 2}, 3), (set(), 0)]]
+    def sanity_approximation(all_bids, i):
+        if i == -1:
+            return approximated_bids
+        else:
+            return approximated_bids[:i] + approximated_bids[i+1:] 
+    a = GMSMAAuction()
+    a.add_bidder([({1}, 4), ({2}, 0), ({1, 2}, 4)])
+    a.add_bidder([({1}, 0), ({2}, 0), ({1, 2}, 8)])
+    a.add_bidder([({1}, 0), ({2}, 3), ({1, 2}, 3)])
+    assert a.finalize(sanity_approximation) == [(set(), 0), ({1, 2}, 7), (set(), 0)]
+
 
