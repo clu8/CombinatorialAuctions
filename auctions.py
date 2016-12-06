@@ -53,14 +53,14 @@ class VCGAuction(AuctionProtocol):
         """
         Returns list of won items and price by bidder
         """
-        outcome, total_bids = self._maximize_welfare(self.all_bids)
+        allocation, total_bids = self._maximize_welfare(self.all_bids)
         return [
             (
                 items,
                 # p_i; if/else not necessary but improves performance
                 self._maximize_welfare(self.all_bids[:i] + self.all_bids[i+1:])[1] \
                     - (total_bids - b_i) if items else 0
-            ) for i, (items, b_i) in enumerate(outcome)
+            ) for i, (items, b_i) in enumerate(allocation)
         ]
 
 class GMSMAAuction(AuctionProtocol):
@@ -68,14 +68,15 @@ class GMSMAAuction(AuctionProtocol):
         """
         v: Function v' which is the submodular version of v, which takes all bids
         """
-        outcome = self._maximize_welfare(v_prime(self.all_bids, -1))[0]
-        print(outcome)
+        allocation = self._maximize_welfare(v_prime(self.all_bids, -1))[0]
+        argmax_social_welfare, total_bids = self._maximize_welfare(self.all_bids)
+        print(allocation)
         result = []
-        for i, (items, v_prime_i) in enumerate(outcome):
+        for i, (items, v_prime_i) in enumerate(allocation):
             u_star = self._maximize_welfare(v_prime(self.all_bids, i))[1]
-            p_i =  u_star - self._maximize_welfare(self.all_bids[:i] + self.all_bids[i+1:])[1]
+            p_i =  u_star - (total_bids - argmax_social_welfare[i][1])
             print('Bidder {}: u* = {}, p_i = {}, b_i = {}'.format(i, u_star, p_i, self.all_bid_dicts[i].get(frozenset(items), 0)))
-            if self.all_bid_dicts[i].get(frozenset(items), 0) < p_i:
+            if p_i < self.all_bid_dicts[i].get(frozenset(items), 0):
                 result.append((items, p_i))
             else:
                 result.append((set(), 0))
