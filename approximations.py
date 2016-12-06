@@ -26,3 +26,7 @@ def unit_demand_approximation(all_bids: List[List[Tuple[Set[int], float]]]):
 
     return [gen_approximate_bids(bids) if is_single_minded(bids) else bids
             for bids in all_bids]
+
+def sanity_approximation():
+    []
+
