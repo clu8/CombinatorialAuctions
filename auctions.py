@@ -64,17 +64,38 @@ class VCGAuction(AuctionProtocol):
         ]
 
 class GMSMAAuction(AuctionProtocol):
+    # def finalize(self, v_prime) -> List[Tuple[Set[int], float]]:
+    #     """
+    #     v: Function v' which is the submodular version of v, which takes all bids
+    #     """
+    #     allocation = self._maximize_welfare(v_prime(self.all_bids, -1))[0]
+    #     argmax_social_welfare, total_bids = self._maximize_welfare(self.all_bids)
+    #     print(allocation)
+    #     result = []
+    #     for i, (items, v_prime_i) in enumerate(allocation):
+    #         u_star = self._maximize_welfare(v_prime(self.all_bids, i))[1]
+    #         p_i =  u_star - (total_bids - argmax_social_welfare[i][1])
+    #         print('Bidder {}: u* = {}, p_i = {}, b_i = {}'.format(i, u_star, p_i, self.all_bid_dicts[i].get(frozenset(items), 0)))
+    #         if p_i < self.all_bid_dicts[i].get(frozenset(items), 0):
+    #             result.append((items, p_i))
+    #         else:
+    #             result.append((set(), 0))
+    #     return result
+
     def finalize(self, v_prime) -> List[Tuple[Set[int], float]]:
         """
         v: Function v' which is the submodular version of v, which takes all bids
         """
+        def remove_bids_with_items(all_bids, items):
+            return [[bid for bid in bids if not bid[0] & items] for bids in all_bids]
+
         allocation = self._maximize_welfare(v_prime(self.all_bids, -1))[0]
         argmax_social_welfare, total_bids = self._maximize_welfare(self.all_bids)
         print(allocation)
         result = []
         for i, (items, v_prime_i) in enumerate(allocation):
             u_star = self._maximize_welfare(v_prime(self.all_bids, i))[1]
-            p_i =  u_star - (total_bids - argmax_social_welfare[i][1])
+            p_i =  u_star - self._maximize_welfare(remove_bids_with_items(self.all_bids[:i] + self.all_bids[i+1:], items))[1]
             print('Bidder {}: u* = {}, p_i = {}, b_i = {}'.format(i, u_star, p_i, self.all_bid_dicts[i].get(frozenset(items), 0)))
             if p_i < self.all_bid_dicts[i].get(frozenset(items), 0):
                 result.append((items, p_i))
