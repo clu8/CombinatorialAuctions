@@ -68,7 +68,7 @@ class GMSMAAuction(AuctionProtocol):
         """
         v: Function v' which is the submodular version of v, which takes all bids
         """
-        outcome, u_star = self._maximize_welfare(v_prime(self.all_bids, -1))
+        outcome = self._maximize_welfare(v_prime(self.all_bids, -1))[0]
         print(outcome)
         result = []
         for i, (items, v_prime_i) in enumerate(outcome):
