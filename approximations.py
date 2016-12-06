@@ -18,7 +18,7 @@ def unit_demand_approximation(all_bids: List[List[Tuple[Set[int], float]]]):
             s = list(iterable)
             return itertools.chain.from_iterable(
                 itertools.combinations(s, r)
-                for r in range(1, len(s))
+                for r in range(len(s))
             )
 
         bundle, bid = bids[0]
