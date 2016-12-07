@@ -8,7 +8,6 @@ from approximations import *
 from simulations import *
 
 
-
 def revenue_plot(n_bidders, n_items, k, n_trials):
 	step_size = 0.1
 	vcg_revenue = []

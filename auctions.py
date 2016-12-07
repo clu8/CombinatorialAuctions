@@ -7,7 +7,6 @@ class AuctionProtocol(object):
     def __init__(self):
         self.all_bids = []
         self.all_bid_dicts = []
-        self.revenue = 0
 
     def add_bidder(self, bids: List[Tuple[Set[int], float]]):
         """
@@ -100,7 +99,6 @@ class GMSMAAuction(AuctionProtocol):
             #print('Bidder {}: u* = {}, p_i = {}, b_i = {}'.format(i, u_star, p_i, self.all_bid_dicts[i].get(frozenset(items), 0)))
             if p_i <= self.all_bid_dicts[i].get(frozenset(items), 0):
                 result.append((items, p_i))
-                self.revenue += p_i
             else:
                 result.append((set(), 0))
         return result
