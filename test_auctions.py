@@ -42,7 +42,6 @@ def test_gmsma():
     a.add_bidder([({1}, 0), ({2}, 0), ({1, 2}, 8)])
     a.add_bidder([({1}, 0), ({2}, 5), ({1, 2}, 5)])
     result = a.finalize(sanity_approximation)
-    assert a.revenue == 8
     assert result == [({1}, 4), (set(), 0), ({2}, 4)]
 
 def test_gmsma2():
@@ -63,13 +62,8 @@ def test_gmsma2():
 
 def test_simulator():
     sim = YokooSimulator(10, 20, True, None, 4, 1)
-    sim2 = YokooSimulator(10, 20, False, unit_demand_approximation, 4, 1)
+    sim2 = YokooSimulator(10, 20, False, single_minded_approximation, 4, 1)
 
-    print(sim.simulate())
-    print(sim2.simulate())
-
-
-test_simulator()
 
 
 

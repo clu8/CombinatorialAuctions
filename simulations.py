@@ -18,14 +18,12 @@ class AuctionSimulator(object):
 			a = VCGAuction()
 			for bid in bids:
 				a.add_bidder(bid)
-			a.finalize()
-			return a.revenue
+			return a.finalize()
 		else:
 			b = GMSMAAuction()
 			for bid in bids:
 				b.add_bidder(bid)
-			b.finalize(self.approximation)
-			return b.revenue
+			return b.finalize(self.approximation)
 
 class YokooSimulator(AuctionSimulator):
 	def __init__(self, n_bidders, n_items, isVCG, approximation, k, r):
@@ -42,6 +40,24 @@ class YokooSimulator(AuctionSimulator):
 				bids.append([({item}, random.randint(0, 1000)) for item in random.sample(range(self.n_items), self.k)])
 
 		return bids
+
+class MultiMindedSimulator(AuctionSimulator):
+	def __init__(self, n_bidders, n_items, isVCG, approximation, k, p, r):
+		super().__init__(n_bidders, n_items, isVCG, approximation)
+		self.k = k
+		self.r = r
+		self.p = p
+
+	def generate_bids(self):
+		bids = []
+		for i in range(self.n_bidders):
+			if random.random() < self.r:
+				bids.append([({item for item in random.sample(range(self.n_items), self.k)}, random.randint(0, 1000*self.k))] for i in range(self.p))
+			else:
+				bids.append([({item}, random.randint(0, 1000)) for item in random.sample(range(self.n_items), self.k)])
+		return bids
+
+
 
 
 

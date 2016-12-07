@@ -18,7 +18,7 @@ def is_unit_demand(bids: List[Tuple[Set[int], float]]):
     """
     Given bids, returns true if bidder is unit-demand (one item per bid). 
     """
-    return all(len(items) == 1 for items, bid in bids)
+    return all(len(items) <= 1 for items, bid in bids)
 
 def single_minded_approximation(all_bids: List[List[Tuple[Set[int], float]]], i):
     """

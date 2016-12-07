@@ -97,7 +97,7 @@ class GMSMAAuction(AuctionProtocol):
             u_star = self._maximize_welfare(v_prime(self.all_bids[:i] + self.all_bids[i+1:], i))[1]
             p_i =  u_star - self._maximize_welfare(remove_bids_with_items(self.all_bids[:i] + self.all_bids[i+1:], items))[1]
             #print('Bidder {}: u* = {}, p_i = {}, b_i = {}'.format(i, u_star, p_i, self.all_bid_dicts[i].get(frozenset(items), 0)))
-            if p_i <= self.all_bid_dicts[i].get(frozenset(items), 0):
+            if p_i <= self.all_bid_dicts[i].get(frozenset(items), 0) and p_i >= 0:
                 result.append((items, p_i))
             else:
                 result.append((set(), 0))
