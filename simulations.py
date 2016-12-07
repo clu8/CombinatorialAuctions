@@ -53,7 +53,7 @@ class MultiMindedSimulator(AuctionSimulator):
 		bids = []
 		for i in range(self.n_bidders):
 			if random.random() < self.r:
-				bids.append([({item for item in random.sample(range(self.n_items), self.k)}, random.randint(0, 1000*self.k))] for i in range(self.p))
+				bids.append([({item for item in random.sample(range(self.n_items), self.k)}, random.randint(0, 1000*self.k))  for i in range(self.p)])
 			else:
 				bids.append([({item}, random.randint(0, 1000)) for item in random.sample(range(self.n_items), self.k)])
 		return bids
