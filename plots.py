@@ -57,4 +57,5 @@ def revenue_plot(n_bidders, n_items, k, n_trials):
 	plt.show()
 
 if __name__ == '__main__':
+	random.seed(42)
 	revenue_plot(6, 4, 2, 1000)
