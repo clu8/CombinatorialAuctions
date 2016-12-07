@@ -43,8 +43,8 @@ def additive_valuation_approximation(all_bids, i):
 
     def gen_approximate_bids(bids):
         v_bounds = (0, None)
-        A = np.array([[1 if item in items else 0 for item in all_items] for items, bid in bids])
-        b = np.array([bid for items, bid in bids])
+        A = np.array([[-1 if item in items else 0 for item in all_items] for items, bid in bids])
+        b = np.array([-bid for items, bid in bids])
         v = linprog(np.ones(len(all_items)), A_ub=A, b_ub=b, bounds=v_bounds)['x']
 
         def approximate_bid(items):
