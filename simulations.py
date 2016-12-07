@@ -10,9 +10,6 @@ class AuctionSimulator(object):
 		self.isVCG = isVCG
 		self.approximation = approximation
 
-	def generate_bids(self):
-		return []
-
 	def simulate(self):
 		bids = self.generate_bids()
 		if self.isVCG:
