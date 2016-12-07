@@ -8,7 +8,6 @@ from auctions import *
 from approximations import *
 from simulations import *
 
-
 def revenue_plot(n_bidders, n_items, k, n_trials):
 	step_size = 0.3
 	vcg_revenue = []
@@ -46,7 +45,7 @@ def revenue_plot(n_bidders, n_items, k, n_trials):
 	plt.xlabel('Proportion of Single-Minded Bidders')
 	plt.ylabel('Protocol Execution Time (Seconds)')
 	plt.title('VCG and GM-SMA Execution Time Comparison')
-	#plt.savefig('plots/runtime2.png')
+	plt.savefig('plots/runtime2.png')
 	plt.clf()
 	plt.plot(np.arange(0, 1, step_size), gmsma_revenue)
 	plt.plot(np.arange(0, 1, step_size), vcg_revenue)
@@ -54,10 +53,8 @@ def revenue_plot(n_bidders, n_items, k, n_trials):
 	plt.xlabel('Proportion of Single-Minded Bidders')
 	plt.ylabel('Revenue')
 	plt.title('VCG and GM-SMA Revenue Comparison')
-	#plt.savefig('plots/revenue2.png')
+	plt.savefig('plots/revenue2.png')
 	plt.show()
 
-
-revenue_plot(6, 4, 2, 1000)
-
-
+if __name__ == '__main__':
+	revenue_plot(6, 4, 2, 1000)

@@ -38,7 +38,7 @@ def additive_valuation_approximation(all_bids, i):
     indicates corresponding bid. Then adds all estimated bids for all
     bundles in power set of union of bundles bidder i submitted a bid for. 
     """
-    all_items = list(set.union(set.union(items for items, bid in bids) for bids in all_bids))
+    all_items = list(set.union(*(set.union(*(items for items, bid in bids)) for bids in all_bids)))
     item_to_idx = {item: i for i, item in enumerate(all_items)}
 
     def gen_approximate_bids(bids):

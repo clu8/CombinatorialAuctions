@@ -1,6 +1,7 @@
+import random
+
 from auctions import *
 from approximations import *
-import random
 
 class AuctionSimulator(object):
 	def __init__(self, n_bidders, n_items, isVCG, approximation):
