@@ -56,11 +56,3 @@ class MultiMindedSimulator(AuctionSimulator):
 			else:
 				bids.append([({item}, random.randint(0, 1000)) for item in random.sample(range(self.n_items), self.k)])
 		return bids
-
-
-
-
-
-
-
-

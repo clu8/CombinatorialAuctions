@@ -63,9 +63,3 @@ def test_gmsma2():
 def test_simulator():
     sim = YokooSimulator(10, 20, True, None, 4, 1)
     sim2 = YokooSimulator(10, 20, False, single_minded_approximation, 4, 1)
-
-
-
-
-
-
