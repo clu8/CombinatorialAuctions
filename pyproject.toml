@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "combinatorialauctions"
+version = "0.1.0"
+description = "Thesis implementation for combinatorial auctions"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "*"
+numpy = "^1.24.1"
+matplotlib = "^3.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
